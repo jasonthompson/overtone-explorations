@@ -1,4 +1,4 @@
-(ns overtone-explorations.basics.clj)
+(ns overtone-explorations.basics)
 
 (use 'overtone.live)
 
@@ -31,9 +31,7 @@
 
 ;; Use fader five to run fn overpad-control
 (osc-handle server "/1/fader5" (fn [msg] (foo-controller (first (:args )))))
-(simple-flute)
 
-(definst foo [freq 440] (sin-osc freq))
 
 
 (foo)
@@ -48,7 +46,6 @@
 
 (defn mooger-osc1-controller [osc1-level]
   (ctl mooger :osc1-level osc1-level))
-
 (defn mooger-osc2-controller [osc2-level]
   (ctl mooger :osc2-level osc2-level))
 
@@ -61,13 +58,13 @@
   (let [cutoff (scale-range cutoff 0 1 0 20000)]
     (ctl mooger :cutoff cutoff)))
 
-(ctl mooger :osc2-level 0.8)
 
+(stop)
 
 
 
 (mooger-controller 0.8)
-
+(osc-handler server "/1/fader5" (fn [msg] (mooger-amp-controller (first (:args msg)))))
 (osc-handle server "/1/fader1" (fn [msg] (mooger-osc1-controller (first (:args msg)))))
 (osc-handle server "/1/fader2" (fn [msg] (mooger-osc2-controller (first (:args msg)))))
 (osc-handle server "/1/fader3" (fn [msg] (mooger-cutoff-controller (first (:args msg)))))
